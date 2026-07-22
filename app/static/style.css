@@ -1,0 +1,199 @@
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 14px;
+  color: #1f2933;
+}
+
+#app {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  height: 100vh;
+}
+
+/* ---------------- control panel ---------------- */
+#panel {
+  overflow-y: auto;
+  padding: 16px;
+  background: #f8fafc;
+  border-right: 1px solid #e2e8f0;
+}
+
+#panel h1 {
+  margin: 0 0 4px;
+  font-size: 20px;
+}
+
+.subtitle {
+  margin: 0 0 16px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+fieldset {
+  margin: 0 0 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: white;
+}
+
+legend {
+  font-weight: 600;
+  color: #334155;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+label {
+  display: block;
+  margin: 6px 0;
+  color: #475569;
+  font-size: 13px;
+}
+
+label.row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+input[type="text"], select {
+  width: 100%;
+  padding: 6px 8px;
+  margin-top: 2px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 13px;
+  background: white;
+}
+
+input[type="checkbox"] {
+  transform: scale(1.2);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  background: #e2e8f0;
+  padding: 4px 10px;
+  font-size: 16px;
+  line-height: 1;
+  color: #334155;
+}
+
+button:hover { background: #cbd5e1; }
+
+button.primary {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 4px;
+  font-size: 15px;
+  font-weight: 600;
+  background: #2563eb;
+  color: white;
+}
+
+button.primary:hover { background: #1d4ed8; }
+button.primary:disabled { background: #94a3b8; cursor: not-allowed; }
+
+/* ---------------- barrier rows ---------------- */
+.barrier-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 4px;
+  margin-bottom: 6px;
+  align-items: center;
+}
+
+.barrier-row input,
+.barrier-row select {
+  margin: 0;
+  padding: 4px 6px;
+  font-size: 12px;
+}
+
+.barrier-row .b-del {
+  padding: 2px 8px;
+  background: #fee2e2;
+  color: #b91c1c;
+  font-size: 14px;
+}
+
+/* ---------------- status + results ---------------- */
+.status {
+  margin-top: 12px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  min-height: 20px;
+}
+
+.status.busy { background: #fef3c7; color: #92400e; }
+.status.ok   { background: #dcfce7; color: #166534; }
+.status.error{ background: #fee2e2; color: #991b1b; }
+
+.results {
+  margin-top: 16px;
+}
+
+.results h3 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: #334155;
+}
+
+.results table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.results th, .results td {
+  text-align: left;
+  padding: 4px 6px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.results th {
+  background: #f1f5f9;
+  color: #475569;
+  font-weight: 600;
+}
+
+.diag {
+  margin-top: 12px;
+  padding: 8px 10px;
+  background: #f1f5f9;
+  border-radius: 6px;
+  font-size: 11px;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+details {
+  margin: 0 0 12px;
+}
+
+details summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #334155;
+  padding: 6px 0;
+}
+
+/* ---------------- map ---------------- */
+#map {
+  height: 100vh;
+}
+
+.leaflet-popup-content {
+  font-size: 12px;
+}

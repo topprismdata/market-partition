@@ -1,0 +1,22 @@
+# Local OSM data (download per README; ~35MB, not version-controlled)
+data/*.pbf
+data/*.osm
+
+# Overpass API cache (runtime artifacts, regenerable)
+cache/*.json
+
+# Generated demo output (regenerable)
+examples/output/*.html
+examples/output/*.png
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+.DS_Store

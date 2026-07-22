@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>市场划分工具 — Market Partition</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- ============== LEFT: control panel ============== -->
+    <aside id="panel">
+      <h1>🗺️ 市场划分</h1>
+      <p class="subtitle">基于 OSM 道路/边界自动切割区域</p>
+
+      <fieldset>
+        <legend>区域 Region</legend>
+        <label>地名
+          <input id="place" type="text" placeholder="北京市 / 海淀区" value="北京市">
+        </label>
+      </fieldset>
+
+      <fieldset id="barriers">
+        <legend>切割要素 Barriers
+          <button type="button" id="addBarrier" title="添加切割要素">+</button>
+        </legend>
+        <div id="barrierList"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>点分类 POI (可选)</legend>
+        <label class="row">
+          <input id="classifyPoints" type="checkbox" checked>
+          <span>自动取区域内 POI 并归类</span>
+        </label>
+        <label>POI 类型
+          <select id="poiPreset">
+            <option value='{"amenity":["restaurant","cafe","bar"]}'>餐饮 (餐厅/咖啡/酒吧)</option>
+            <option value='{"shop":true}'>商店 (所有)</option>
+            <option value='{"amenity":["school","hospital"]}'>学校 / 医院</option>
+            <option value='{"tourism":["hotel","attraction"]}'>酒店 / 景点</option>
+            <option value='{"highway":["bus_stop","subway_entrance"]}'>公交 / 地铁站</option>
+          </select>
+        </label>
+      </fieldset>
+
+      <details>
+        <summary>高级参数</summary>
+        <label>缓冲带宽度 (度, 留空=自适应)
+          <input id="bufferDeg" type="text" placeholder="0.0003">
+        </label>
+        <label>端点桥接阈值 (度, 默认 0.003)
+          <input id="snapDeg" type="text" placeholder="0.003">
+        </label>
+        <label class="row">
+          <input id="cacheBust" type="checkbox">
+          <span>强制刷新 OSM 缓存</span>
+        </label>
+      </details>
+
+      <button id="runBtn" class="primary">▶ 执行划分</button>
+
+      <div id="status" class="status"></div>
+
+      <div id="results" class="results"></div>
+    </aside>
+
+    <!-- ============== RIGHT: map ============== -->
+    <main id="map"></main>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>
