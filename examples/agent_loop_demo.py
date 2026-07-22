@@ -24,7 +24,7 @@ from market_partition.agent import (
 )
 from market_partition.sources.osm import OsmSource
 
-PBF = "/Users/ghb/ZCodeProject/market_partition/data/beijing-latest.osm.pbf"
+PBF = str(Path(__file__).resolve().parent.parent / "data" / "beijing-latest.osm.pbf")
 OUT = Path(__file__).resolve().parent / "output"
 
 # Ground-truth landmarks for verification (2nd Ring).

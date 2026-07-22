@@ -23,7 +23,7 @@ from shapely.geometry import Point
 from market_partition.sources.osm import OsmSource
 from market_partition.geometry.split import Barrier, partition
 
-PBF = "/Users/ghb/ZCodeProject/market_partition/data/beijing-latest.osm.pbf"
+PBF = str(Path(__file__).resolve().parent.parent / "data" / "beijing-latest.osm.pbf")
 OUT = Path(__file__).resolve().parent / "output"
 OUT.mkdir(exist_ok=True)
 

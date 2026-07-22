@@ -17,8 +17,8 @@
 ### 1. 先跑一遍验证，确认环境正常
 
 ```bash
-cd /Users/ghb/ZCodeProject/market_partition
-source /Users/ghb/ZCodeProject/.venv/bin/activate
+cd market-partition   # 或你 clone 后的目录名
+# 激活你的 Python 虚拟环境（按你的环境来）
 
 # 单元测试（<1s）
 python -m pytest tests/test_split.py tests/test_classify.py -q

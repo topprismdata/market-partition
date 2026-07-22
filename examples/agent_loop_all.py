@@ -27,7 +27,7 @@ from market_partition.geometry.orient import Orientation
 from market_partition.sources.osm import OsmSource
 from shapely.geometry import Polygon
 
-PBF = "/Users/ghb/ZCodeProject/market_partition/data/beijing-latest.osm.pbf"
+PBF = str(Path(__file__).resolve().parent.parent / "data" / "beijing-latest.osm.pbf")
 OUT = Path(__file__).resolve().parent / "output"
 
 # Landmarks (lon, lat, expected label substring) — geographic ground truth.
