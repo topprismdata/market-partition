@@ -1,8 +1,9 @@
 /* market_partition front-end
  *
  * Flow:  form → POST /api/partition → GeoJSON → render on Leaflet.
- * Two render layers: region polygons (filled by side_index) + POI points
- * (colored by region_id). The barrier line itself is drawn in red on top.
+ * Three render layers: region polygons (outline only, no fill) + POI heatmap
+ * (rainbow gradient, dense=red) + barrier line (red dashed) on top.
+ * Center labels on each region carry the name + POI count.
  */
 
 const DEFAULT_BARRIERS = [
@@ -13,10 +14,9 @@ const PALETTE = [
   "#4C78A8", "#F58518", "#54A24B", "#E45756",
   "#72B7B2", "#EECA3B", "#B279A2", "#FF9DA6",
 ];
-const BOUNDARY_COLOR = "#888";
 
 let map;
-let regionsLayer, pointsLayer, barrierLayer;
+let regionsLayer, pointsLayer, barrierLayer, labelLayer;
 let activeRegions = null;  // last result, for inspection
 
 function initMap() {
@@ -130,6 +130,37 @@ async function run() {
   }
 }
 
+// Compute a representative center [lat, lng] for a GeoJSON feature directly
+// from its coordinates, avoiding lyr.getBounds() which can throw on some
+// Leaflet/GeoJSON layer combinations.
+function _featureCenter(feat) {
+  const coords = feat.geometry.coordinates;
+  const depth = Array.isArray(coords) ? _arrayDepth(coords) : 0;
+  // Normalize to a flat list of [lng, lat] positions.
+  let positions;
+  if (depth <= 2) {
+    positions = [coords];                 // single point [lng, lat]
+  } else if (depth === 3) {
+    positions = coords.flat();            // Polygon: [ [ [lng,lat], ... ] ] → [ [lng,lat], ... ]
+  } else if (depth === 4) {
+    positions = coords.flat(2);           // MultiPolygon
+  } else {
+    positions = JSON.parse(JSON.stringify(coords)).flat(Infinity);
+  }
+  let minLng = Infinity, maxLng = -Infinity, minLat = Infinity, maxLat = -Infinity;
+  for (const [lng, lat] of positions) {
+    if (lng < minLng) minLng = lng;
+    if (lng > maxLng) maxLng = lng;
+    if (lat < minLat) minLat = lat;
+    if (lat > maxLat) maxLat = lat;
+  }
+  return [(minLat + maxLat) / 2, (minLng + maxLng) / 2];
+}
+
+function _arrayDepth(arr) {
+  return Array.isArray(arr) ? 1 + _arrayDepth(arr[0]) : 0;
+}
+
 // ---------------- render ----------------
 function render(data) {
   activeRegions = data;
@@ -138,17 +169,18 @@ function render(data) {
   if (regionsLayer) map.removeLayer(regionsLayer);
   if (pointsLayer) map.removeLayer(pointsLayer);
   if (barrierLayer) map.removeLayer(barrierLayer);
+  if (labelLayer) map.removeLayer(labelLayer);
 
-  // Region polygons, colored by label-side for contrast.
+  // Region polygons — outline only, no fill, so the base map stays readable.
   const features = data.features;
   regionsLayer = L.geoJSON(features, {
     style: (feat) => {
       const idx = feat.properties.region_id ?? 0;
       return {
         color: PALETTE[idx % PALETTE.length],
-        weight: 2,
+        weight: 3,
         fillColor: PALETTE[idx % PALETTE.length],
-        fillOpacity: 0.25,
+        fillOpacity: 0,
       };
     },
     onEachFeature: (feat, lyr) => {
@@ -162,6 +194,26 @@ function render(data) {
     },
   }).addTo(map);
 
+  // Center labels per region — standalone divIcon markers in their own layer
+  // group. Iterate the raw GeoJSON features directly (no Leaflet layer
+  // dependency) and compute the center from the feature's own coordinates.
+  labelLayer = L.layerGroup().addTo(map);
+  data.features.forEach((feat) => {
+    const p = feat.properties;
+    const idx = p.region_id ?? 0;
+    const color = PALETTE[idx % PALETTE.length];
+    const center = _featureCenter(feat);
+    L.marker(center, {
+      keyboard: false,
+      icon: L.divIcon({
+        className: "region-label",
+        html: `<span class="region-label-chip" style="background:${color}">${p.label}<br><small>${p.poi_count} POI</small></span>`,
+        iconSize: [140, 44],
+        iconAnchor: [70, 22],
+      }),
+    }).addTo(labelLayer);
+  });
+
   // Barrier line on top in red.
   if (data.barrier) {
     barrierLayer = L.geoJSON(data.barrier, {
@@ -169,27 +221,26 @@ function render(data) {
     }).addTo(map);
   }
 
-  // POI points colored by region.
-  if (data.points) {
-    pointsLayer = L.geoJSON(data.points, {
-      pointToLayer: (feat, latlng) => {
-        const rid = feat.properties.region_id;
-        const color = rid === null ? BOUNDARY_COLOR : PALETTE[rid % PALETTE.length];
-        return L.circleMarker(latlng, {
-          radius: 4,
-          color,
-          fillColor: color,
-          fillOpacity: 0.8,
-          weight: 1,
-        });
-      },
-      onEachFeature: (feat, lyr) => {
-        const p = feat.properties;
-        lyr.bindPopup(
-          `<b>${p.name || p.amenity || "POI"}</b><br>` +
-          `归属: ${p.region_label}<br>` +
-          `region_id: ${p.region_id}`
-        );
+  // POI → heatmap (rainbow gradient). Dense clusters glow red/yellow; the
+  // base map remains visible everywhere. Single-point popups are lost by
+  // design — the table + popup on each region carry the counts.
+  if (data.points && data.points.features.length) {
+    const latlngs = data.points.features.map((f) => {
+      const [lng, lat] = f.geometry.coordinates;
+      return [lat, lng, 0.5];
+    });
+    pointsLayer = L.heatLayer(latlngs, {
+      radius: 18,
+      blur: 22,
+      maxZoom: 14,
+      max: 1.0,
+      minOpacity: 0.25,
+      gradient: {
+        0.0: "blue",
+        0.25: "cyan",
+        0.5: "lime",
+        0.75: "yellow",
+        1.0: "red",
       },
     }).addTo(map);
   }
@@ -203,12 +254,17 @@ function renderResultsPanel(data) {
   root.innerHTML = "<h3>划分结果</h3>";
   const tbl = document.createElement("table");
   tbl.innerHTML = `
-    <tr><th>#</th><th>标签</th><th>面积</th><th>POI 数</th></tr>
+    <tr><th></th><th>#</th><th>标签</th><th>面积</th><th>POI 数</th></tr>
   `;
   data.features.forEach((f) => {
     const p = f.properties;
+    const idx = p.region_id ?? 0;
+    const color = PALETTE[idx % PALETTE.length];
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${p.region_id}</td><td>${p.label}</td><td>${p.area}</td><td>${p.poi_count}</td>`;
+    // Color swatch ties each row to its map outline color.
+    tr.innerHTML =
+      `<td><span class="swatch" style="background:${color}"></span></td>` +
+      `<td>${p.region_id}</td><td>${p.label}</td><td>${p.area}</td><td>${p.poi_count}</td>`;
     tbl.appendChild(tr);
   });
   root.appendChild(tbl);
