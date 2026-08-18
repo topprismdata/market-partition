@@ -276,17 +276,17 @@ Detailed geometry belongs in `docs/geometry.md`.
 
 ## Data provenance
 
-Recommended `DATA_PROVENANCE.md` should document:
+Data sources, license terms, attribution requirements, and which
+datasets are intentionally excluded from this public repository are
+documented in [`DATA_PROVENANCE.md`](DATA_PROVENANCE.md). Highlights:
 
 -   OpenStreetMap / Geofabrik sources;
 -   local PBF versus Overpass usage;
--   OSM license / attribution requirements;
--   which datasets are intentionally not committed;
--   whether any enterprise POI / outlet data used in downstream projects
-    is excluded from this public repository.
+-   OSM ODbL attribution requirement;
+-   any enterprise POI / outlet data used in downstream projects is
+    excluded from this public repository.
 
-The public repository should remain runnable with public or synthetic
-data.
+The public repository is runnable with public or synthetic data.
 
 ------------------------------------------------------------------------
 
@@ -302,22 +302,21 @@ data.
 
 ------------------------------------------------------------------------
 
-## Recommended repository cleanup
+## Documentation
 
-Move long-form material out of the README:
+Long-form material is split across:
 
-``` text
-docs/
-├── agent-loop.md
-├── geometry.md
-├── validation.md
-├── data-provenance.md
-└── images/
-```
+-   [`docs/agent-loop.md`](docs/agent-loop.md) — six self-describing
+    tools and the agent loop demo;
+-   [`docs/geometry.md`](docs/geometry.md) — closed-ring and linear-
+    barrier algorithms;
+-   [`docs/validation.md`](docs/validation.md) — five Beijing
+    validation cases;
+-   [`DATA_PROVENANCE.md`](DATA_PROVENANCE.md) — data sources and
+    licensing.
 
-Keep the README focused on:
-
-> problem → architecture → evidence → boundaries → quick start.
+The README is the public decision-and-evidence entry point; it stays
+focused on identity, architecture, evidence and boundaries.
 
 ------------------------------------------------------------------------
 
