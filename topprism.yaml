@@ -1,36 +1,40 @@
 topprism:
-  purpose: world_model
+  purpose: world-model
   capability: spatial_partitioning
-  platform_layer: business_world_model
-  maturity: real_data_validated
+  platform_layer: business-world-model
+  maturity: real-data-validated
   evidence:
-    type: public_real_world_data
-    source: OpenStreetMap
-    validation: programmatic_plus_visual
-    scope: "5 Beijing validation cases (2nd/3rd/4th/5th Ring + Chang'an Avenue); programmatic landmark checks + multimodal visual inspection"
+    type: public-real-world-data
+    source: openstreetmap
+    validation: programmatic-plus-visual
+    scope: >-
+      5 Beijing validation cases (2nd / 3rd / 4th / 5th Ring + Chang'an
+      Avenue); programmatic landmark checks plus multimodal visual
+      inspection.
+    status: validated
   product_context:
-    - market_definition
-    - territory_design
-    - spatial_intelligence
+    - market-definition
+    - territory-design
+    - spatial-intelligence
 
 business_question:
   en: >-
-    How can a business-defined market boundary — "inside the Fifth Ring",
-    "north of Chang'an Avenue", "either side of this corridor" — be
-    converted into deterministic, reproducible geometry that downstream
-    territory and visit decisions can rely on?
+    How can a business-defined market boundary — 'inside the Fifth
+    Ring', 'north of Chang'an Avenue', 'either side of this corridor'
+    — be converted into deterministic, reproducible geometry that
+    downstream territory and visit decisions can rely on?
   zh: >-
-    "五环内"、"长安街北"、"这条走廊两侧"这类业务定义的市场边界，
+    '五环内'、'长安街北'、'这条走廊两侧'这类业务定义的市场边界，
     如何转换为下游商圈与拜访决策可以依赖的、可复现的决定性几何？
 
 platform:
-  system: decision_intelligence
-  layer: business_world_model
-  solution: market_partition
+  system: decision-intelligence
+  layer: business-world-model
+  solution: market-partition
 
 website:
-  product_path: /world-model/market-partition
-  evidence_path: /evidence/market-partition
+  status: planned
+  path: /world-model/market-partition
 
 repository:
   owner: topprismdata
