@@ -125,4 +125,4 @@ python examples/agent_loop_all.py     # 全部 5 case
 
 - [`geometry.md`](geometry.md) — 几何算法详解
 - [`validation.md`](validation.md) — 5 个 case 的完整评估记录
-- [`../DATA_PROVENANCE.md`](../DATA_PROVENANCE.md) — 数据来源与 OSM attribution
+- [`DATA_PROVENANCE.md`](DATA_PROVENANCE.md) — 数据来源与 OSM attribution

@@ -62,4 +62,4 @@ accuracy = total_correct / len(landmarks)
 
 - [`agent-loop.md`](agent-loop.md) — 6 工具详解
 - [`geometry.md`](geometry.md) — 算法细节
-- [`../DATA_PROVENANCE.md`](../DATA_PROVENANCE.md) — 数据来源
+- [`DATA_PROVENANCE.md`](DATA_PROVENANCE.md) — 数据来源

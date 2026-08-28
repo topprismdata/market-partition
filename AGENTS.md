@@ -8,7 +8,7 @@
 - **闭合环 (closed)**：环路/行政界 → 内/外
 - **线性 (linear)**：主干道/河流 → 南/北 或 东/西
 
-详细文档见 [README.md](README.md)，待办见 [TODO.md](TODO.md)。
+详细文档见 [README.md](README.md)，待办见 [docs/TODO.md](docs/TODO.md)。
 
 ---
 

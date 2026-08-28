@@ -288,7 +288,7 @@ Detailed geometry belongs in `docs/geometry.md`.
 
 Data sources, license terms, attribution requirements, and which
 datasets are intentionally excluded from this public repository are
-documented in [`DATA_PROVENANCE.md`](DATA_PROVENANCE.md). Highlights:
+documented in [`docs/DATA_PROVENANCE.md`](docs/DATA_PROVENANCE.md). Highlights:
 
 -   OpenStreetMap / Geofabrik sources;
 -   local PBF versus Overpass usage;
@@ -322,7 +322,7 @@ Long-form material is split across:
     barrier algorithms;
 -   [`docs/validation.md`](docs/validation.md) — five Beijing
     validation cases;
--   [`DATA_PROVENANCE.md`](DATA_PROVENANCE.md) — data sources and
+-   [`docs/DATA_PROVENANCE.md`](docs/DATA_PROVENANCE.md) — data sources and
     licensing.
 
 The README is the public decision-and-evidence entry point; it stays
