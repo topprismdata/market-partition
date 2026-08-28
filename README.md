@@ -4,6 +4,12 @@
 
 # Market Partition
 
+> **Language / 语言:** English primary · 中文概览如下。
+>
+> ### 中文概览
+> 将人类定义的市场边界和空间意图转换为确定、可复现、可审计的几何结构。
+
+
 **Deterministic spatial partitioning with agentic semantic
 interpretation and visual verification.**
 
